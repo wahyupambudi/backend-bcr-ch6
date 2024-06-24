@@ -38,7 +38,15 @@ app.use("/api/v1/logs", logRouter);
 
 app.get("/", (_req: Request, res: Response) => {
     res.status(200).json({
-        message: "Rest API Binar Car Rental"
+        message: "Assalamualaikum Wr Wb.",
+        info: "Service REST API Binar Car Rental Student Wahyu Pambudi",
+        endpoint: [
+            "api/v1/auth/register",
+            "api/v1/auth/login",
+            "api/v1/users",
+            "api/v1/cars"
+        ],
+        note: "Jangan lupa makan"
     })
 })
 
