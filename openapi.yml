@@ -1,0 +1,1573 @@
+openapi: "3.0.0"
+info:
+  title: "API For Binar Car Rental"
+  version: "1.0.0"
+  description: "Challenge Chapter 6 - REST API Binar Car Rental with Express Js, Typescript, Postgres, JWT, Logs CRUD and Documentation with OPEN API"
+servers:
+  - url: "http://localhost:3000/api/v1"
+paths:
+  /auth/register:
+    post:
+      summary: "Register a New User"
+      tags:
+        - "Authentication"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "newuser"
+                email:
+                  type: string
+                  example: "newuser@mail.com"
+                password:
+                  type: string
+                  example: "newsecurepassword"
+      responses:
+        '201':
+          description: "User registered successfully."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User registered successfully."
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 4
+                      name:
+                        type: string
+                        example: "newuser"
+                      email:
+                        type: string
+                        example: "newuser@mail.com"
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: "2024-06-02T02:28:51.107Z"
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        example: "2024-06-02T02:28:51.107Z"
+        '400':
+          description: "Invalid input data."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Invalid input data."
+  /auth/login:
+    post:
+      summary: "User Login"
+      tags:
+        - "Authentication"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: "user@mail.com"
+                password:
+                  type: string
+                  example: "userpassword"
+      responses:
+        '200':
+          description: "User logged in successfully."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User logged in successfully."
+                  token:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.e30.V6lL_nH64FUmOjoF1-HpddrmIHfiW6LpQHGeuJMC4fI"
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: "user"
+                      email:
+                        type: string
+                        example: "user@mail.com"
+                      role:
+                        type: string
+                        example: "member"
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: "2024-05-31T06:35:15.597Z"
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        example: "2024-05-31T06:35:15.597Z"
+        '400':
+          description: "Invalid login credentials."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Invalid login credentials."
+        '401':
+          description: "Unauthorized."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Unauthorized."
+        '404':
+          description: "Not Found."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User not found."
+  /auth/whoami:
+    get:
+      summary: "Get Current User"
+      tags:
+        - "Authentication"
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: "Current user information retrieved successfully."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: "superadmin"
+                  email:
+                    type: string
+                    example: "superadmin@mail.com"
+                  role:
+                    type: string
+                    example: "superadmin"
+                  createdAt:
+                    type: string
+                    format: date-time
+                    example: "2024-05-31T06:35:15.597Z"
+                  updatedAt:
+                    type: string
+                    format: date-time
+                    example: "2024-05-31T06:35:15.597Z"
+        '401':
+          description: "Unauthorized."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Unauthorized."
+  /users:
+    get:
+      summary: "Get All Users"
+      tags:
+        - "Users"
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: "User found."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Success"
+                  users:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: "superadmin"
+                        email:
+                          type: string
+                          example: "superadmin@mail.com"
+                        password:
+                          type: string
+                          example: "$2b$10$Fwgx/f80eOQhSqG6eM5fQuTDEiOt/GQ0lczcFjkFjNHP8Zndf0FFC"
+                        role:
+                          type: string
+                          example: "superadmin"
+                        createdAt:
+                          type: string
+                          format: date-time
+                          example: "2024-06-02T02:28:45.033Z"
+                        updatedAt:
+                          type: string
+                          format: date-time
+                          example: "2024-06-02T02:28:45.033Z"
+                        deletedAt:
+                          type: string
+                          format: date-time
+                          nullable: true
+                          example: null
+        '401':
+          description: "User Unauthorized."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User Unauthorized."
+        '403':
+          description: "Forbidden."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Forbidden: Access denied."
+        '404':
+          description: "User not found."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User not found."
+  /users/create:
+    post:
+      summary: "Create a New User"
+      tags:
+        - "Users"
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "newuser"
+                email:
+                  type: string
+                  example: "newuser@mail.com"
+                password:
+                  type: string
+                  example: "securepassword"
+                role:
+                  type: string
+                  example: "member"
+      responses:
+        '201':
+          description: "User created successfully."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User created successfully."
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 4
+                      name:
+                        type: string
+                        example: "newuser"
+                      email:
+                        type: string
+                        example: "newuser@mail.com"
+                      role:
+                        type: string
+                        example: "member"
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: "2024-06-02T02:28:45.033Z"
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        example: "2024-06-02T02:28:45.033Z"
+                      deletedAt:
+                        type: string
+                        format: date-time
+                        nullable: true
+                        example: null
+        '400':
+          description: "Invalid input."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Invalid input data."
+        '401':
+          description: "User Unauthorized."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User Unauthorized."
+        '403':
+          description: "Forbidden."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Forbidden: Access denied."
+        '409':
+          description: "Conflict. User already exists."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User already exists."
+  /users/email:
+    get:
+      summary: "Get User by Email"
+      tags:
+        - "Users"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
+          description: "The email of the user to retrieve."
+      responses:
+        '200':
+          description: "User found."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User found."
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 3
+                      name:
+                        type: string
+                        example: "member"
+                      email:
+                        type: string
+                        example: "member@mail.com"
+                      password:
+                        type: string
+                        example: "$2b$10$Ocsb2y5O/5uYJ/gsuoHRFO.XDg006W/eu592FCd2zGpC8ZlmJK1Lu"
+                      role:
+                        type: string
+                        example: "member"
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: "2024-06-02T02:28:45.033Z"
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        example: "2024-06-02T02:28:45.033Z"
+                      deletedAt:
+                        type: string
+                        format: date-time
+                        nullable: true
+                        example: null
+        '400':
+          description: "Invalid email format."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Invalid email format."
+        '401':
+          description: "User Unauthorized."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User Unauthorized."
+        '403':
+          description: "Forbidden."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Forbidden: Access denied."
+        '404':
+          description: "User not found."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User not found."
+  /users/update/{id}:
+    put:
+      summary: "Update a User"
+      tags:
+        - "Users"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: "The ID of the user to update."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "updateduser"
+                email:
+                  type: string
+                  example: "updateduser@mail.com"
+                password:
+                  type: string
+                  example: "newsecurepassword"
+                role:
+                  type: string
+                  example: "member"
+      responses:
+        '200':
+          description: "User updated successfully."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User updated successfully."
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 3
+                      name:
+                        type: string
+                        example: "updateduser"
+                      email:
+                        type: string
+                        example: "updateduser@mail.com"
+                      role:
+                        type: string
+                        example: "member"
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: "2024-06-02T02:28:45.033Z"
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        example: "2024-06-02T03:00:00.000Z"
+                      deletedAt:
+                        type: string
+                        format: date-time
+                        nullable: true
+                        example: null
+        '400':
+          description: "Invalid input data."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Invalid input data."
+        '401':
+          description: "User Unauthorized."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User Unauthorized."
+        '403':
+          description: "Forbidden."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Forbidden: Access denied."
+        '404':
+          description: "User not found."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User not found."
+  /users/delete/{id}:
+    delete:
+      summary: "Delete a User"
+      tags:
+        - "Users"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: "The ID of the user to delete."
+      responses:
+        '204':
+          description: "User deleted successfully."
+        '401':
+          description: "User Unauthorized."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User Unauthorized."
+        '403':
+          description: "Forbidden."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Forbidden: Access denied."
+        '404':
+          description: "User not found."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User not found."
+
+  /cars/:
+    get:
+      summary: "Get All Cars"
+      tags:
+        - "Cars"
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: "Cars found."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Success"
+                  cars:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        user_id:
+                          type: integer
+                          example: 1
+                        car_name:
+                          type: string
+                          example: "Toyota Camry"
+                        type:
+                          type: string
+                          example: "Sedan"
+                        desc:
+                          type: string
+                          example: "spacious and comfortable sedan"
+                        seat:
+                          type: integer
+                          example: 3
+                        transmission:
+                          type: string
+                          example: "Automatic"
+                        year:
+                          type: string
+                          example: "2020"
+                        price:
+                          type: integer
+                          example: 20000
+                        availabillity:
+                          type: boolean
+                          example: true
+                        start_rent:
+                          type: string
+                          format: date-time
+                          example: "2024-06-02T02:28:51.107Z"
+                        end_rent:
+                          type: string
+                          format: date-time
+                          example: "2024-06-02T02:28:51.107Z"
+                        img:
+                          type: string
+                          example: "camry.jpg"
+                        createdAt:
+                          type: string
+                          format: date-time
+                          example: "2024-06-02T02:28:51.107Z"
+                        updatedAt:
+                          type: string
+                          format: date-time
+                          example: "2024-06-02T02:28:51.107Z"
+                        deletedAt:
+                          type: string
+                          format: date-time
+                          nullable: true
+                          example: null
+        '401':
+          description: "Unauthorized."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Unauthorized."
+        '403':
+          description: "Forbidden."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Forbidden: Access denied."
+        '404':
+          description: "Cars not found."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Cars not found."
+  /cars/available:
+    get:
+      summary: "Get Available Cars"
+      tags:
+        - "Cars"
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: "Available cars found."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Success"
+                  cars:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        user_id:
+                          type: integer
+                          example: 1
+                        car_name:
+                          type: string
+                          example: "Toyota Camry"
+                        type:
+                          type: string
+                          example: "Sedan"
+                        desc:
+                          type: string
+                          example: "spacious and comfortable sedan"
+                        seat:
+                          type: integer
+                          example: 3
+                        transmission:
+                          type: string
+                          example: "Automatic"
+                        year:
+                          type: string
+                          example: "2020"
+                        price:
+                          type: integer
+                          example: 20000
+                        availabillity:
+                          type: boolean
+                          example: true
+                        start_rent:
+                          type: string
+                          format: date-time
+                          example: "2024-06-02T02:28:51.107Z"
+                        end_rent:
+                          type: string
+                          format: date-time
+                          example: "2024-06-02T02:28:51.107Z"
+                        img:
+                          type: string
+                          example: "camry.jpg"
+                        createdAt:
+                          type: string
+                          format: date-time
+                          example: "2024-06-02T02:28:51.107Z"
+                        updatedAt:
+                          type: string
+                          format: date-time
+                          example: "2024-06-02T02:28:51.107Z"
+                        deletedAt:
+                          type: string
+                          format: date-time
+                          nullable: true
+                          example: null
+        '401':
+          description: "Unauthorized."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Unauthorized."
+        '403':
+          description: "Forbidden."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Forbidden: Access denied."
+        '404':
+          description: "Available cars not found."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Available cars not found."
+  /cars/create:
+    post:
+      summary: "Create a New Car"
+      tags:
+        - "Cars"
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  example: 1
+                car_name:
+                  type: string
+                  example: "Toyota Camry"
+                type:
+                  type: string
+                  example: "Sedan"
+                desc:
+                  type: string
+                  example: "spacious and comfortable sedan"
+                seat:
+                  type: integer
+                  example: 3
+                transmission:
+                  type: string
+                  example: "Automatic"
+                year:
+                  type: string
+                  example: "2020"                
+                price:
+                  type: integer
+                  example: 20000
+                availabillity:
+                  type: boolean
+                  example: true
+                start_rent:
+                  type: string
+                  format: date-time
+                  example: "2024-06-02T02:28:51.107Z"
+                end_rent:
+                  type: string
+                  format: date-time
+                  example: "2024-06-02T02:28:51.107Z"
+                img:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: "Car created successfully."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Car created successfully."
+                  car:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 4
+                      user_id:
+                        type: integer
+                        example: 1
+                      car_name:
+                        type: string
+                        example: "Toyota Camry"
+                      type:
+                        type: string
+                        example: "Sedan"
+                      desc:
+                        type: string
+                        example: "spacious and comfortable sedan"
+                      seat:
+                        type: integer
+                        example: 3
+                      transmission:
+                        type: string
+                        example: "Automatic"
+                      year:
+                        type: string
+                        example: "2020"
+                      price:
+                        type: integer
+                        example: 20000
+                      availabillity:
+                        type: boolean
+                        example: true
+                      start_rent:
+                        type: string
+                        format: date-time
+                        example: "2024-06-02T02:28:51.107Z"
+                      end_rent:
+                        type: string
+                        format: date-time
+                        example: "2024-06-02T02:28:51.107Z"
+                      img:
+                        type: string
+                        example: "camry.jpg"
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: "2024-06-02T02:28:51.107Z"
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        example: "2024-06-02T02:28:51.107Z"
+                      deletedAt:
+                        type: string
+                        format: date-time
+                        nullable: true
+                        example: null
+        '400':
+          description: "Invalid input data."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Invalid input data."
+        '401':
+          description: "Unauthorized."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Unauthorized."
+        '403':
+          description: "Forbidden."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Forbidden: Access denied."
+  /cars/update/{id}:
+    put:
+      summary: "Update a Car"
+      tags:
+        - "Cars"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: "The ID of the car to update."
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  example: 1
+                car_name:
+                  type: string
+                  example: "Toyota Camry"
+                type:
+                  type: string
+                  example: "Sedan"
+                desc:
+                  type: string
+                  example: "spacious and comfortable sedan"
+                seat:
+                  type: integer
+                  example: 3
+                transmission:
+                  type: string
+                  example: "Automatic"
+                year:
+                  type: string
+                  example: "2020"      
+                price:
+                  type: integer
+                  example: 20000
+                availabillity:
+                  type: boolean
+                  example: true
+                start_rent:
+                  type: string
+                  format: date-time
+                  example: "2024-06-02T02:28:51.107Z"
+                end_rent:
+                  type: string
+                  format: date-time
+                  example: "2024-06-02T02:28:51.107Z"
+                img:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: "Car updated successfully."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Car updated successfully."
+                  car:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 4
+                      user_id:
+                        type: integer
+                        example: 1
+                      car_name:
+                        type: string
+                        example: "Toyota Camry"
+                      type:
+                        type: string
+                        example: "Sedan"
+                      desc:
+                        type: string
+                        example: "spacious and comfortable sedan"
+                      seat:
+                        type: integer
+                        example: 3
+                      transmission:
+                        type: string
+                        example: "Automatic"
+                      year:
+                        type: string
+                        example: "2020"
+                      price:
+                        type: integer
+                        example: 20000
+                      availabillity:
+                        type: boolean
+                        example: true
+                      start_rent:
+                        type: string
+                        format: date-time
+                        example: "2024-06-02T02:28:51.107Z"
+                      end_rent:
+                        type: string
+                        format: date-time
+                        example: "2024-06-02T02:28:51.107Z"
+                      img:
+                        type: string
+                        example: "camry.jpg"
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: "2024-06-02T02:28:51.107Z"
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        example: "2024-06-02T02:28:51.107Z"
+                      deletedAt:
+                        type: string
+                        format: date-time
+                        nullable: true
+                        example: null
+        '400':
+          description: "Invalid input data."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Invalid input data."
+        '401':
+          description: "Unauthorized."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Unauthorized."
+        '403':
+          description: "Forbidden."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Forbidden: Access denied."
+        '404':
+          description: "Car not found."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Car not found."
+  /cars/delete/{id}:
+    delete:
+      summary: "Delete a Car"
+      tags:
+        - "Cars"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: "The ID of the car to delete."
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: "Car deleted successfully."
+        '401':
+          description: "Unauthorized."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Unauthorized."
+          '403':
+          description: "Forbidden."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Forbidden: Access denied."
+        '404':
+          description: "Car not found."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Car not found."
+  /logs:
+    get:
+      summary: "Get All Logs"
+      tags:
+        - "Logs"
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: "Logs retrieved successfully."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Success"
+                  logs:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        user_id:
+                          type: integer
+                          example: 1
+                        user_name:
+                          type: string
+                          example: "superadmin"
+                        process:
+                          type: string
+                          example: "insert"
+                        car_name:
+                          type: string
+                          example: "Toyota Camry"
+                        type:
+                          type: string
+                          example: "Sedan"
+                        desc:
+                          type: string
+                          example: "spacious and comfortable sedan"
+                        seat:
+                          type: integer
+                          example: 3
+                        transmission:
+                          type: string
+                          example: "Automatic"
+                        year:
+                          type: string
+                          example: "2020"
+                        price:
+                          type: integer
+                          example: 20000
+                        availabillity:
+                          type: boolean
+                          example: true
+                        start_rent:
+                          type: string
+                          format: date-time
+                          example: "2024-06-02T10:31:38.973Z"
+                        end_rent:
+                          type: string
+                          format: date-time
+                          example: "2024-06-02T10:31:38.973Z"
+                        img:
+                          type: string
+                          example: "camry.jpg"
+                        created_At:
+                          type: string
+                          format: date-time
+                          example: "2024-06-02T10:31:38.973Z"
+                        updated_At:
+                          type: string
+                          format: date-time
+                          example: "2024-06-02T10:31:38.973Z"
+                        deleted_At:
+                          type: string
+                          format: date-time
+                          nullable: true
+                          example: null
+        '401':
+          description: "User Unauthorized."
+        '404':
+          description: "Logs not found."
+  /logs/insert:
+    get:
+      summary: "Get Insert Logs"
+      tags:
+        - "Logs"
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: "Insert logs retrieved successfully."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Success"
+                  logs:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        user_id:
+                          type: integer
+                          example: 1
+                        user_name:
+                          type: string
+                          example: "superadmin"
+                        process:
+                          type: string
+                          example: "insert"
+                        car_name:
+                          type: string
+                          example: "Toyota Camry"
+                        type:
+                          type: string
+                          example: "Sedan"
+                        desc:
+                          type: string
+                          example: "spacious and comfortable sedan"
+                        seat:
+                          type: integer
+                          example: 3
+                        transmission:
+                          type: string
+                          example: "Automatic"
+                        year:
+                          type: string
+                          example: "2020"
+                        price:
+                          type: integer
+                          example: 20000
+                        availabillity:
+                          type: boolean
+                          example: true
+                        start_rent:
+                          type: string
+                          format: date-time
+                          example: "2024-06-02T10:31:38.973Z"
+                        end_rent:
+                          type: string
+                          format: date-time
+                          example: "2024-06-02T10:31:38.973Z"
+                        img:
+                          type: string
+                          example: "camry.jpg"
+                        created_At:
+                          type: string
+                          format: date-time
+                          example: "2024-06-02T10:31:38.973Z"
+                        updated_At:
+                          type: string
+                          format: date-time
+                          example: "2024-06-02T10:31:38.973Z"
+                        deleted_At:
+                          type: string
+                          format: date-time
+                          nullable: true
+                          example: null
+        '401':
+          description: "User Unauthorized."
+        '404':
+          description: "Logs not found."
+  /logs/update:
+    get:
+      summary: "Get Update Logs"
+      tags:
+        - "Logs"
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: "Update logs retrieved successfully."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Success"
+                  logs:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 5
+                        user_id:
+                          type: integer
+                          example: 2
+                        user_name:
+                          type: string
+                          example: "admin"
+                        process:
+                          type: string
+                          example: "update"
+                        car_name:
+                          type: string
+                          example: "Toyota Camry Update"
+                        type:
+                          type: string
+                          example: "Sedan"
+                        desc:
+                          type: string
+                          example: "spacious and comfortable sedan"
+                        seat:
+                          type: integer
+                          example: 3
+                        transmission:
+                          type: string
+                          example: "Automatic"
+                        year:
+                          type: string
+                          example: "2020"
+                        price:
+                          type: integer
+                          example: 350000
+                        availabillity:
+                          type: boolean
+                          example: true
+                        start_rent:
+                          type: string
+                          format: date-time
+                          example: "2024-06-01T10:00:00.000Z"
+                        end_rent:
+                          type: string
+                          format: date-time
+                          example: "2024-06-10T10:00:00.000Z"
+                        img:
+                          type: string
+                          example: "https://res.cloudinary.com/dulz7fjbz/image/upload/v1717330940/bcr_ch6/npi3zpnylvnwamo2yspz.png"
+                        created_At:
+                          type: string
+                          format: date-time
+                          example: "2024-06-02T12:22:09.782Z"
+                        updated_At:
+                          type: string
+                          format: date-time
+                          example: "2024-06-02T12:22:19.604Z"
+                        deleted_At:
+                          type: string
+                          format: date-time
+                          nullable: true
+                          example: null
+        '401':
+          description: "User Unauthorized."
+        '404':
+          description: "Update logs not found."
+  /logs/delete:
+    get:
+      summary: "Get Delete Logs"
+      tags:
+        - "Logs"
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: "Logs retrieved successfully."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Success"
+                  logs:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 6
+                        user_id:
+                          type: integer
+                          example: 2
+                        user_name:
+                          type: string
+                          example: "admin"
+                        process:
+                          type: string
+                          example: "delete"
+                        car_name:
+                          type: string
+                          example: "Toyota Camry Update"
+                        type:
+                          type: string
+                          example: "Sedan"
+                        desc:
+                          type: string
+                          example: "spacious and comfortable sedan"
+                        seat:
+                          type: integer
+                          example: 3
+                        transmission:
+                          type: string
+                          example: "Automatic"
+                        year:
+                          type: string
+                          example: "2020"
+                        price:
+                          type: integer
+                          example: 350000
+                        availabillity:
+                          type: boolean
+                          example: true
+                        start_rent:
+                          type: string
+                          format: date-time
+                          example: "2024-06-01T10:00:00.000Z"
+                        end_rent:
+                          type: string
+                          format: date-time
+                          example: "2024-06-10T10:00:00.000Z"
+                        img:
+                          type: string
+                          example: "https://res.cloudinary.com/dulz7fjbz/image/upload/v1717330940/bcr_ch6/npi3zpnylvnwamo2yspz.png"
+                        created_At:
+                          type: string
+                          format: date-time
+                          example: "2024-06-02T12:22:09.782Z"
+                        updated_At:
+                          type: string
+                          format: date-time
+                          example: "2024-06-02T12:22:19.604Z"
+                        deleted_At:
+                          type: string
+                          format: date-time
+                          example: "2024-06-02T12:22:23.134Z"
+        '401':
+          description: "User Unauthorized."
+        '404':
+          description: "Logs not found."
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
