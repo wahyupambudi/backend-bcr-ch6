@@ -40,13 +40,13 @@ app.get("/", (_req: Request, res: Response) => {
     res.status(200).json({
         message: "Assalamualaikum Wr Wb.",
         info: "Service REST API Binar Car Rental Student Wahyu Pambudi",
+        note: "Jangan lupa makan",
         endpoint: [
             "api/v1/auth/register",
             "api/v1/auth/login",
             "api/v1/users",
             "api/v1/cars"
         ],
-        note: "Jangan lupa makan"
     })
 })
 
