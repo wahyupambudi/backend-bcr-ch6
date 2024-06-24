@@ -9,6 +9,7 @@ const config: { [key: string]: Knex.Config } = {
     client: "postgresql",
     connection: {
       // filename: "./dev.sqlite3"
+      host: process.env.HOSTDB,
       database: process.env.DATABASE,
       user: process.env.USER,
       password: process.env.PASSWORD
