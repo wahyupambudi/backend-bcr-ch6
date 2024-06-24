@@ -17,7 +17,7 @@ const options = {
         },
         servers: [
             {
-                url: 'http://localhost:3000/api/v1',
+                url: 'https://be-bcr-ch6-production.up.railway.app/api/v1',
             },
         ],
     },
