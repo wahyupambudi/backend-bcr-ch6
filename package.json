@@ -4,7 +4,7 @@
   "description": "Challenge Chapter 6",
   "main": "index.js",
   "scripts": {
-    "test": "jest --forceExit",
+    "test": "jest --forceExit --config",
     "start": "node app/index.ts",
     "dev": "nodemon app/index.ts",
     "build": "tsc -p .",
